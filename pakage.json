@@ -1,0 +1,9 @@
+{
+  "name": "makinggoodhabit",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@google/genai": "^0.1.1",
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}
