@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<title>좋은 습관 만들기 & 도전 퀴즈 🏆</title>
+<title>좋은 습관 만들기 & 보상 상점 🏆</title>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---bg:#fff6e0;--card:#fffdf6;--ink:#2a2118;--sub:#6b5b48;--line:#2a2118;--hanja:#c8321e;--hist:#1f5fa8;--math:#6c5ce7;--ok:#2e8b4f;--no:#c8321e;--gold:#f2b100;--key:#ff9f43}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1a14;--card:#2b241b;--ink:#f6ead2;--sub:#c4b494;--line:#f6ead2;--hanja:#ff7a63;--hist:#6fb0ff;--math:#a29bfe;--ok:#5fd08a;--no:#ff7a63;--gold:#f2b100;--key:#ffa834}}
+--bg:#fff6e0;--card:#fffdf6;--ink:#2a2118;--sub:#6b5b48;--line:#2a2118;--hanja:#c8321e;--hist:#1f5fa8;--math:#6c5ce7;--shop:#e17055;--ok:#2e8b4f;--no:#c8321e;--gold:#f2b100;--key:#ff9f43}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1a14;--card:#2b241b;--ink:#f6ead2;--sub:#c4b494;--line:#f6ead2;--hanja:#ff7a63;--hist:#6fb0ff;--math:#a29bfe;--shop:#fab1a0;--ok:#5fd08a;--no:#ff7a63;--gold:#f2b100;--key:#ffa834}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Jua","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px;line-height:1.5}
@@ -20,21 +20,21 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
 .user-tag{display:flex;align-items:center;gap:6px;font-size:1.05rem;font-weight:bold}
 .user-btn{font:inherit;font-size:.9rem;background:none;border:1.5px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer}
 
-/* 메인 네비게이션 탭 */
-.nav-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
-.tab-btn{font:inherit;font-size:1.15rem;padding:12px 10px;border:3px solid var(--line);border-radius:14px;background:var(--card);color:var(--sub);cursor:pointer;box-shadow:3px 3px 0 var(--line);transition:all .15s;text-align:center}
+/* 메인 3개 탭 네비게이션 */
+.nav-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px}
+.tab-btn{font:inherit;font-size:1.05rem;padding:11px 6px;border:3px solid var(--line);border-radius:14px;background:var(--card);color:var(--sub);cursor:pointer;box-shadow:3px 3px 0 var(--line);transition:all .15s;text-align:center;white-space:nowrap}
 .tab-btn.active{background:var(--gold);color:var(--ink);box-shadow:1px 1px 0 var(--line);transform:translate(2px,2px);font-weight:bold}
 
 /* 상태 대시보드 카드 */
 .dash-card{background:var(--card);border:3px solid var(--line);border-radius:18px;padding:16px 18px;margin-bottom:18px;box-shadow:4px 4px 0 var(--line)}
 .dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .dash-date{font-size:1.05rem;color:var(--sub)}
-.dash-stats{display:flex;gap:10px}
-.stat-pill{display:flex;align-items:center;gap:5px;background:var(--bg);border:2px solid var(--line);border-radius:99px;padding:4px 12px;font-size:1rem;font-weight:bold}
+.dash-stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat-pill{display:flex;align-items:center;gap:5px;background:var(--bg);border:2px solid var(--line);border-radius:99px;padding:4px 10px;font-size:.95rem;font-weight:bold}
 
 /* 섹션 타이틀 */
 .sec-title{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}
-.sec-title h2{font-size:1.45rem;margin:0}
+.sec-title h2{font-size:1.4rem;margin:0}
 .sec-sub{font-size:.9rem;color:var(--sub)}
 
 /* 퀘스트 목록 */
@@ -64,16 +64,34 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
 .big b{display:block;font-size:1.3rem}
 .big span{color:var(--sub);font-size:.95rem}
 .big .k{font-size:2.2rem;float:right;line-height:1;margin-left:8px}
-.big .cost-tag{display:inline-block;background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:2px 8px;font-size:.85rem;color:var(--key);margin-top:6px;font-weight:bold}
+.big .reward-tag{display:inline-block;background:#fff2e0;border:1.5px solid var(--key);border-radius:8px;padding:2px 8px;font-size:.85rem;color:#d35400;margin-top:6px;font-weight:bold}
 .hanja .k{color:var(--hanja)}.hist .k{color:var(--hist)}.math .k{color:var(--math)}
 
-/* 현황(통계) 페이지 스타일 */
+/* 상점 그리드 & 아이템 카드 */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px}
+.shop-card{background:var(--card);border:3px solid var(--line);border-radius:16px;padding:14px 12px;text-align:center;box-shadow:3px 3px 0 var(--line);display:flex;flex-direction:column;justify-content:space-between}
+.shop-icon{font-size:2.6rem;margin-bottom:4px}
+.shop-title{font-size:1.15rem;font-weight:bold;margin-bottom:4px}
+.shop-desc{font-size:.85rem;color:var(--sub);margin-bottom:10px}
+.shop-buy-btn{background:var(--gold);color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:8px 0;font:inherit;font-size:1rem;cursor:pointer;font-weight:bold;box-shadow:2px 2px 0 var(--line)}
+.shop-buy-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--line)}
+
+/* 보유 쿠폰함 */
+.coupon-box{background:var(--card);border:3px solid var(--line);border-radius:18px;padding:16px;margin-bottom:20px;box-shadow:3px 3px 0 var(--line)}
+.coupon-list{display:grid;gap:10px;margin-top:10px}
+.coupon-item{background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between}
+.coupon-info{display:flex;align-items:center;gap:10px}
+.coupon-icon{font-size:1.8rem}
+.coupon-title{font-weight:bold;font-size:1.05rem}
+.coupon-time{font-size:.8rem;color:var(--sub)}
+.use-btn{background:var(--ok);color:white;border:2px solid var(--line);border-radius:10px;padding:6px 14px;font:inherit;font-size:.95rem;cursor:pointer;font-weight:bold}
+.use-btn:active{transform:scale(0.96)}
+
+/* 현황 통계 */
 .stat-summary-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:20px}
 .summary-box{background:var(--card);border:2.5px solid var(--line);border-radius:14px;padding:12px 10px;text-align:center;box-shadow:2px 2px 0 var(--line)}
 .summary-val{font-size:1.6rem;font-weight:bold;color:var(--ink);margin-top:2px}
 .summary-lbl{font-size:.85rem;color:var(--sub)}
-
-/* 주간 스트릭 바 */
 .weekly-calendar{background:var(--card);border:3px solid var(--line);border-radius:16px;padding:16px;margin-bottom:20px;box-shadow:3px 3px 0 var(--line)}
 .week-grid{display:grid;grid-template-columns:repeat(7, 1fr);gap:6px;margin-top:10px;text-align:center}
 .day-col{display:flex;flex-direction:column;align-items:center;gap:4px}
@@ -82,15 +100,11 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
 .day-badge.today{border-color:var(--gold);border-width:3px}
 .day-badge.done{background:var(--ok);color:white;border-color:var(--ok)}
 .day-count{font-size:.75rem;color:var(--sub)}
-
-/* 최근 퀴즈 기록 카드 */
 .history-item{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-size:.95rem}
 .history-left{display:flex;flex-direction:column}
 .history-mode{font-weight:bold}
 .history-time{font-size:.8rem;color:var(--sub)}
 .history-score{font-size:1.25rem;font-weight:bold;color:var(--ok)}
-
-/* 오답 리스트 카드 */
 .wrong-item{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:8px}
 .wrong-q{font-weight:bold;margin-bottom:4px;font-size:1rem}
 .wrong-ans{color:var(--ok);font-size:.95rem}
@@ -132,9 +146,10 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
   <button class="user-btn" id="loginBtn">로그인</button>
 </div>
 
-<!-- 탭 버튼 네비게이션 -->
+<!-- 탭 네비게이션: 도전 / 상점 / 현황 -->
 <nav class="nav-tabs">
   <button class="tab-btn active" id="tabBtnHome" onclick="switchMainTab('home')">🏠 오늘의 도전</button>
+  <button class="tab-btn" id="tabBtnShop" onclick="switchMainTab('shop')">🛍️ 열쇠 상점</button>
   <button class="tab-btn" id="tabBtnStats" onclick="switchMainTab('stats')">📊 성장 현황</button>
 </nav>
 
@@ -145,11 +160,12 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
       <div class="dash-date" id="currentDateStr">오늘의 도전</div>
       <div class="dash-stats">
         <div class="stat-pill" title="보유 열쇠">🔑 <span id="keyCount">0</span>개</div>
+        <div class="stat-pill" title="오늘 모은 열쇠">⚡ 오늘 <span id="dailyKeyCount">0</span>/5</div>
         <div class="stat-pill" title="연속 달성">🔥 <span id="streakCount">0</span>일</div>
       </div>
     </div>
     <div style="font-size:.95rem;color:var(--sub)">
-      💡 <b>오늘 내가 정한 퀘스트</b>를 완료하고 <b>열쇠(🔑)</b>를 모아 퀴즈에 도전하세요!
+      💡 <b>할 일 완료</b>와 <b>퀴즈 도전(70점 이상)</b>으로 열쇠를 모아 <b>상점</b>에서 원하는 보상으로 바꿔보세요!
     </div>
   </div>
 
@@ -167,64 +183,144 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
     <button type="submit" class="add-btn">+ 퀘스트 추가</button>
   </form>
 
-  <!-- 2. 도전 퀴즈 아레나 -->
-  <!-- 은수 추천 수학 섹션 -->
+  <!-- 2. 도전 퀴즈 아레나 (열쇠 소모 없음, 성공 시 열쇠 획득!) -->
   <div class="sec-title" style="margin-top:28px">
     <h2>🧮 반짝반짝 수학 퀴즈 <span style="font-size:.9rem;color:var(--math);font-weight:normal">(은수 추천 ⭐)</span></h2>
-    <span class="sec-sub">1판당 🔑 1개</span>
+    <span class="sec-sub">성공 시 🔑 +1</span>
   </div>
 
   <div class="menu" style="margin-bottom:24px">
-    <button class="big math" onclick="handleStartQuiz('math_mul')">
+    <button class="big math" onclick="startQuizGame('math_mul')">
       <span class="k">✖️</span>
       <b>두 자리 수 곱셈 왕</b>
       <span>두 자리 수와 두 자리 수의 곱셈 챌린지!</span>
-      <div class="cost-tag">🔑 열쇠 1개</div>
+      <div class="reward-tag">🏆 70점 이상 시 🔑 +1</div>
     </button>
-    <button class="big math" onclick="handleStartQuiz('math_div')">
+    <button class="big math" onclick="startQuizGame('math_div')">
       <span class="k">➗</span>
       <b>두 자리 나눗셈 마스터</b>
       <span>두 자리 수를 한 자리 수로 쏙쏙 나누기!</span>
-      <div class="cost-tag">🔑 열쇠 1개</div>
+      <div class="reward-tag">🏆 70점 이상 시 🔑 +1</div>
     </button>
   </div>
 
-  <!-- 수인 추천 한자 & 세계사 섹션 -->
   <div class="sec-title">
     <h2>⚔️ 한자 & 세계사 퀴즈 <span style="font-size:.9rem;color:var(--hanja);font-weight:normal">(수인 추천 🏆)</span></h2>
-    <span class="sec-sub">1판당 🔑 1개</span>
+    <span class="sec-sub">성공 시 🔑 +1</span>
   </div>
 
   <div class="menu">
-    <button class="big hanja" onclick="handleStartQuiz('hanja1')">
+    <button class="big hanja" onclick="startQuizGame('hanja1')">
       <span class="k">字</span>
       <b>구몬 B단계 복습</b>
       <span>배운 한자 90자의 훈과 음 맞히기</span>
-      <div class="cost-tag">🔑 열쇠 1개</div>
+      <div class="reward-tag">🏆 70점 이상 시 🔑 +1</div>
     </button>
-    <button class="big hanja" onclick="handleStartQuiz('hanja2')">
+    <button class="big hanja" onclick="startQuizGame('hanja2')">
       <span class="k">漢</span>
       <b>한자 모양 도전</b>
       <span>비슷한 글자 구별하기, 글자 합쳐 만들기</span>
-      <div class="cost-tag">🔑 열쇠 1개</div>
+      <div class="reward-tag">🏆 70점 이상 시 🔑 +1</div>
     </button>
-    <button class="big hanja" onclick="handleStartQuiz('hanja3')">
+    <button class="big hanja" onclick="startQuizGame('hanja3')">
       <span class="k">級</span>
       <b>한자 5급 도전 (150자)</b>
       <span>대한검정회 5급 한자의 훈과 음 맞히기</span>
-      <div class="cost-tag">🔑 열쇠 1개</div>
+      <div class="reward-tag">🏆 70점 이상 시 🔑 +1</div>
     </button>
-    <button class="big hist" onclick="handleStartQuiz('hist')">
+    <button class="big hist" onclick="startQuizGame('hist')">
       <span class="k">🌍</span>
       <b>세계사 퀴즈</b>
       <span>고대 문명부터 현대까지 사건과 인물 맞히기</span>
-      <div class="cost-tag">🔑 열쇠 1개</div>
+      <div class="reward-tag">🏆 70점 이상 시 🔑 +1</div>
     </button>
   </div>
   <p class="sub" id="best" style="margin-top:20px;text-align:center"></p>
 </section>
 
-<!-- 2. 성장 현황 탭 -->
+<!-- 2. 열쇠 상점 탭 (신규!) -->
+<section id="viewShop" class="hide">
+  <!-- 상점 헤더 카드 -->
+  <div class="dash-card" style="background:#fff7f2;border-color:var(--shop)">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <h2 style="font-size:1.35rem;margin:0 0 4px;color:var(--shop)">🛍️ 열쇠 보상 상점</h2>
+        <span style="font-size:.9rem;color:var(--sub)">열쇠로 원하는 보상 쿠폰을 교환하세요!</span>
+      </div>
+      <div class="stat-pill" style="font-size:1.15rem;padding:6px 14px;background:white">
+        내 열쇠: <b id="shopKeyCount" style="color:var(--key);margin-left:4px">0</b>🔑
+      </div>
+    </div>
+  </div>
+
+  <!-- 보상 아이템 목록 -->
+  <div class="sec-title">
+    <h2>🎁 교환 가능한 보상</h2>
+    <span class="sec-sub">엄마아빠 공인 쿠폰!</span>
+  </div>
+
+  <div class="shop-grid">
+    <div class="shop-card">
+      <div>
+        <div class="shop-icon">🎮</div>
+        <div class="shop-title">게임 1시간 이용권</div>
+        <div class="shop-desc">닌텐도/모바일 게임 자유 시간!</div>
+      </div>
+      <button class="shop-buy-btn" onclick="buyReward('게임 1시간 이용권', '🎮', 3)">🔑 3개로 교환</button>
+    </div>
+
+    <div class="shop-card">
+      <div>
+        <div class="shop-icon">📺</div>
+        <div class="shop-title">영상 1시간 시청권</div>
+        <div class="shop-desc">유튜브 또는 좋아하는 만화 시청!</div>
+      </div>
+      <button class="shop-buy-btn" onclick="buyReward('영상 1시간 시청권', '📺', 3)">🔑 3개로 교환</button>
+    </div>
+
+    <div class="shop-card">
+      <div>
+        <div class="shop-icon">🍦</div>
+        <div class="shop-title">특별 간식 교환권</div>
+        <div class="shop-desc">아이스크림이나 맛있는 간식 냠냠!</div>
+      </div>
+      <button class="shop-buy-btn" onclick="buyReward('특별 간식 교환권', '🍦', 2)">🔑 2개로 교환</button>
+    </div>
+
+    <div class="shop-card">
+      <div>
+        <div class="shop-icon">🌙</div>
+        <div class="shop-title">30분 늦게 자기</div>
+        <div class="shop-desc">금요일이나 주말 밤 30분 연장!</div>
+      </div>
+      <button class="shop-buy-btn" onclick="buyReward('30분 늦게 자기', '🌙', 2)">🔑 2개로 교환</button>
+    </div>
+
+    <div class="shop-card" style="grid-column: span 2">
+      <div>
+        <div class="shop-icon">🎲</div>
+        <div class="shop-title">엄마아빠 소원권 (스페셜)</div>
+        <div class="shop-desc">부모님과 보드게임 한판 또는 원하는 선물 약속!</div>
+      </div>
+      <button class="shop-buy-btn" onclick="buyReward('엄마아빠 소원권', '🎲', 4)">🔑 4개로 교환</button>
+    </div>
+  </div>
+
+  <!-- 내가 보유한 쿠폰함 -->
+  <div class="coupon-box">
+    <div style="font-weight:bold;font-size:1.15rem;display:flex;align-items:center;gap:6px">
+      <span>🎟️ 내 보관함 (미사용 쿠폰)</span>
+      <span id="couponCount" style="color:var(--ok);font-size:1rem">(0장)</span>
+    </div>
+    <div style="font-size:.85rem;color:var(--sub);margin-top:2px">사용할 때 부모님께 보여드리고 [사용하기]를 누르세요.</div>
+    
+    <div class="coupon-list" id="myCouponList">
+      <div style="text-align:center;padding:16px;color:var(--sub)">보관 중인 쿠폰이 없어요.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 성장 현황 탭 -->
 <section id="viewStats" class="hide">
   <div class="stat-summary-grid">
     <div class="summary-box">
@@ -337,25 +433,20 @@ const shuffle = a => {
   return a;
 };
 
-// 비밀번호 설정 (수인: 2017, 은수: 2021)
-const PINS = {
-  suin: "2017",
-  eunsu: "2021"
-};
-
+const PINS = { suin: "2017", eunsu: "2021" };
 let currentUser = store("activeUser") || { role: "guest", name: "게스트" };
 let currentHabits = [];
+let currentCoupons = [];
 let weeklyStatsData = [];
 let playerKeys = 0;
+let dailyKeysEarned = 0;
 let playerStreak = 0;
 
 const now = new Date();
 const days = ["일", "월", "화", "수", "목", "금", "토"];
 $("currentDateStr").textContent = `${now.getMonth() + 1}월 ${now.getDate()}일 (${days[now.getDay()]}요일)`;
 
-function isMember(u) {
-  return u && (u.role === "suin" || u.role === "eunsu");
-}
+function isMember(u) { return u && (u.role === "suin" || u.role === "eunsu"); }
 
 function updateUserBar() {
   if (currentUser.role === "suin") {
@@ -370,13 +461,15 @@ function updateUserBar() {
 
 function switchMainTab(tab) {
   $("tabBtnHome").classList.toggle("active", tab === 'home');
+  $("tabBtnShop").classList.toggle("active", tab === 'shop');
   $("tabBtnStats").classList.toggle("active", tab === 'stats');
+
   $("viewHome").classList.toggle("hide", tab !== 'home');
+  $("viewShop").classList.toggle("hide", tab !== 'shop');
   $("viewStats").classList.toggle("hide", tab !== 'stats');
 
-  if (tab === 'stats') {
-    loadStatsView();
-  }
+  if (tab === 'shop') renderCoupons();
+  if (tab === 'stats') loadStatsView();
 }
 
 $("loginBtn").onclick = () => {
@@ -410,10 +503,8 @@ function applyLogin() {
   const role = $("roleSelect").value;
   if (role === "suin" || role === "eunsu") {
     const pin = $("pinInput").value;
-    const targetPin = PINS[role];
-    if (pin === targetPin) {
-      const name = (role === "suin") ? "수인" : "은수";
-      currentUser = { role, name };
+    if (pin === PINS[role]) {
+      currentUser = { role, name: role === "suin" ? "수인" : "은수" };
       store("activeUser", currentUser);
       closeModal('loginModal');
       $("pinInput").value = "";
@@ -425,8 +516,7 @@ function applyLogin() {
       $("pinInput").focus();
     }
   } else {
-    const gName = $("guestNameInput").value.trim() || "게스트";
-    currentUser = { role: "guest", name: gName };
+    currentUser = { role: "guest", name: $("guestNameInput").value.trim() || "게스트" };
     store("activeUser", currentUser);
     closeModal('loginModal');
     updateUserBar();
@@ -436,21 +526,19 @@ function applyLogin() {
 
 function closeModal(id) { $(id).classList.add("hide"); }
 
-// ===== 퀘스트 / 습관 API 연동 =====
+// ===== 대시보드 로드 (할 일, 쿠폰, 열쇠) =====
 async function loadDashboard() {
-  const member = isMember(currentUser);
   showBest();
-
-  if (!member) {
-    const local = store(`localHabits_${currentUser.name}`) || [
+  if (!isMember(currentUser)) {
+    currentHabits = store(`localHabits_${currentUser.name}`) || [
       { id: 1, title: "오늘 책 20분 읽기", completed: false },
       { id: 2, title: "방 깨끗이 정돈하기", completed: false }
     ];
-    currentHabits = local;
-    playerKeys = store(`localKeys_${currentUser.name}`) || 2;
+    playerKeys = store(`localKeys_${currentUser.name}`) || 3;
+    dailyKeysEarned = store(`localDailyKeys_${currentUser.name}`) || 1;
     playerStreak = 1;
-    weeklyStatsData = [];
-    renderHabits();
+    currentCoupons = store(`localCoupons_${currentUser.name}`) || [];
+    renderDashboardUI();
     return;
   }
 
@@ -459,17 +547,21 @@ async function loadDashboard() {
     const data = await res.json();
     currentHabits = data.habits || [];
     playerKeys = data.status?.keys || 0;
+    dailyKeysEarned = data.status?.daily_keys_earned || 0;
     playerStreak = data.status?.streak || 0;
+    currentCoupons = data.coupons || [];
     weeklyStatsData = data.weeklyStats || [];
-    renderHabits();
+    renderDashboardUI();
   } catch (e) {
-    $("questList").innerHTML = `<div style="text-align:center;color:var(--no);padding:14px">퀘스트 불러오기 실패</div>`;
+    $("questList").innerHTML = `<div style="text-align:center;color:var(--no);padding:14px">데이터 불러오기 실패</div>`;
   }
 }
 
-function renderHabits() {
+function renderDashboardUI() {
   $("keyCount").textContent = playerKeys;
+  $("dailyKeyCount").textContent = dailyKeysEarned;
   $("streakCount").textContent = playerStreak;
+  $("shopKeyCount").textContent = playerKeys;
 
   const doneCount = currentHabits.filter(h => h.completed).length;
   $("questProgress").textContent = `${doneCount} / ${currentHabits.length} 완료`;
@@ -477,23 +569,24 @@ function renderHabits() {
   const listEl = $("questList");
   if (currentHabits.length === 0) {
     listEl.innerHTML = `<div style="text-align:center;padding:18px;color:var(--sub)">등록된 오늘의 퀘스트가 없어요.<br>아래에서 해낼 일을 직접 추가해 보세요! ✍️</div>`;
-    return;
+  } else {
+    listEl.innerHTML = "";
+    currentHabits.forEach(h => {
+      const item = document.createElement("div");
+      item.className = `quest-item ${h.completed ? 'done' : ''}`;
+      item.innerHTML = `
+        <div class="quest-left" onclick="toggleHabit(${h.id})">
+          <div class="quest-check">${h.completed ? '✓' : ''}</div>
+          <span class="quest-text">${h.title}</span>
+        </div>
+        <span class="quest-reward">${h.completed ? '완료! 🔑' : '+1 🔑'}</span>
+        <button class="del-btn" title="삭제" onclick="deleteHabit(${h.id})">✕</button>
+      `;
+      listEl.appendChild(item);
+    });
   }
 
-  listEl.innerHTML = "";
-  currentHabits.forEach(h => {
-    const item = document.createElement("div");
-    item.className = `quest-item ${h.completed ? 'done' : ''}`;
-    item.innerHTML = `
-      <div class="quest-left" onclick="toggleHabit(${h.id})">
-        <div class="quest-check">${h.completed ? '✓' : ''}</div>
-        <span class="quest-text">${h.title}</span>
-      </div>
-      <span class="quest-reward">${h.completed ? '완료! 🔑' : '+1 🔑'}</span>
-      <button class="del-btn" title="삭제" onclick="deleteHabit(${h.id})">✕</button>
-    `;
-    listEl.appendChild(item);
-  });
+  renderCoupons();
 }
 
 async function handleCreateQuest(e) {
@@ -506,7 +599,7 @@ async function handleCreateQuest(e) {
     currentHabits.push({ id: Date.now(), title, completed: false });
     store(`localHabits_${currentUser.name}`, currentHabits);
     input.value = "";
-    renderHabits();
+    renderDashboardUI();
     return;
   }
 
@@ -520,9 +613,7 @@ async function handleCreateQuest(e) {
       input.value = "";
       loadDashboard();
     }
-  } catch (err) {
-    alert("퀘스트 등록 실패");
-  }
+  } catch (err) { alert("퀘스트 등록 실패"); }
 }
 
 async function toggleHabit(id) {
@@ -530,12 +621,22 @@ async function toggleHabit(id) {
     const h = currentHabits.find(x => x.id === id);
     if (h) {
       h.completed = !h.completed;
-      playerKeys += h.completed ? 1 : -1;
-      playerKeys = Math.max(0, playerKeys);
+      if (h.completed) {
+        if (dailyKeysEarned < 5) {
+          playerKeys++;
+          dailyKeysEarned++;
+          if (typeof confetti === 'function') confetti({ particleCount: 60, spread: 60 });
+        } else {
+          alert("오늘의 열쇠 획득 한도(5개)에 도달했어요! 멋져요!");
+        }
+      } else {
+        playerKeys = Math.max(0, playerKeys - 1);
+        dailyKeysEarned = Math.max(0, dailyKeysEarned - 1);
+      }
       store(`localHabits_${currentUser.name}`, currentHabits);
       store(`localKeys_${currentUser.name}`, playerKeys);
-      if (h.completed && typeof confetti === 'function') confetti({ particleCount: 50, spread: 60 });
-      renderHabits();
+      store(`localDailyKeys_${currentUser.name}`, dailyKeysEarned);
+      renderDashboardUI();
     }
     return;
   }
@@ -547,38 +648,123 @@ async function toggleHabit(id) {
       body: JSON.stringify({ action: "toggle", player: currentUser.name, habit_id: id })
     });
     const result = await res.json();
-    if (result.completed && typeof confetti === 'function') {
+    if (result.completed && result.keyChange > 0 && typeof confetti === 'function') {
       confetti({ particleCount: 70, spread: 70, origin: { y: 0.6 } });
+    } else if (result.limitReached) {
+      alert("오늘 열쇠 획득 한도(5개)를 모두 채웠어요! 퀘스트 완료는 기록됩니다.");
     }
     loadDashboard();
-  } catch (err) {
-    alert("상태 변경 실패");
-  }
+  } catch (err) { alert("상태 변경 실패"); }
 }
 
 async function deleteHabit(id) {
   if (!confirm("이 퀘스트를 삭제할까요?")) return;
-
   if (!isMember(currentUser)) {
     currentHabits = currentHabits.filter(x => x.id !== id);
     store(`localHabits_${currentUser.name}`, currentHabits);
-    renderHabits();
+    renderDashboardUI();
+    return;
+  }
+  try {
+    await fetch(`/api/habits?id=${id}&player=${encodeURIComponent(currentUser.name)}`, { method: "DELETE" });
+    loadDashboard();
+  } catch (err) { alert("삭제 실패"); }
+}
+
+// ===== 상점 보상 구매 및 쿠폰 사용 =====
+async function buyReward(title, icon, cost) {
+  if (playerKeys < cost) {
+    alert(`🔑 열쇠가 부족해요! (필요: ${cost}개 / 보유: ${playerKeys}개)\n할 일과 퀴즈로 열쇠를 더 모아보세요.`);
+    return;
+  }
+
+  if (!confirm(`🔑 열쇠 ${cost}개로 [${title}]을(를) 교환할까요?`)) return;
+
+  if (!isMember(currentUser)) {
+    playerKeys -= cost;
+    currentCoupons.unshift({ id: Date.now(), title, icon, cost, created_at: new Date().toISOString() });
+    store(`localKeys_${currentUser.name}`, playerKeys);
+    store(`localCoupons_${currentUser.name}`, currentCoupons);
+    alert(`🎉 [${title}] 교환 완료! 내 보관함에 쿠폰이 쏙 들어갔어요.`);
+    if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 80 });
+    renderDashboardUI();
     return;
   }
 
   try {
-    await fetch(`/api/habits?id=${id}&player=${encodeURIComponent(currentUser.name)}`, { method: "DELETE" });
+    const res = await fetch("/api/habits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "buy_reward", player: currentUser.name, title, icon, cost })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      alert(data.error || "교환 실패");
+      return;
+    }
+    alert(`🎉 [${title}] 교환 완료! 내 보관함에 쿠폰이 쏙 들어갔어요.`);
+    if (typeof confetti === 'function') confetti({ particleCount: 80, spread: 80, origin: { y: 0.6 } });
     loadDashboard();
-  } catch (err) {
-    alert("삭제 실패");
+  } catch (e) { alert("서버 통신 오류"); }
+}
+
+function renderCoupons() {
+  const box = $("myCouponList");
+  $("couponCount").textContent = `(${currentCoupons.length}장)`;
+
+  if (currentCoupons.length === 0) {
+    box.innerHTML = `<div style="text-align:center;padding:16px;color:var(--sub)">보관 중인 미사용 쿠폰이 없어요.</div>`;
+    return;
   }
+
+  box.innerHTML = "";
+  currentCoupons.forEach(c => {
+    const item = document.createElement("div");
+    item.className = "coupon-item";
+    const d = new Date(c.created_at);
+    const dateStr = `${d.getMonth()+1}/${d.getDate()} 교환`;
+    item.innerHTML = `
+      <div class="coupon-info">
+        <span class="coupon-icon">${c.icon}</span>
+        <div>
+          <div class="coupon-title">${c.title}</div>
+          <div class="coupon-time">${dateStr}</div>
+        </div>
+      </div>
+      <button class="use-btn" onclick="useCoupon(${c.id}, '${c.title}')">사용하기</button>
+    `;
+    box.appendChild(item);
+  });
+}
+
+async function useCoupon(couponId, title) {
+  if (!confirm(`엄마나 아빠에게 [${title}] 쿠폰을 보여드렸나요?\n확인을 누르면 쿠폰이 사용 완료 처리됩니다.`)) return;
+
+  if (!isMember(currentUser)) {
+    currentCoupons = currentCoupons.filter(c => c.id !== couponId);
+    store(`localCoupons_${currentUser.name}`, currentCoupons);
+    alert(`✨ [${title}] 쿠폰을 사용했습니다! 즐거운 시간 보내세요!`);
+    renderDashboardUI();
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/habits", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "use_coupon", player: currentUser.name, coupon_id: couponId })
+    });
+    if (res.ok) {
+      alert(`✨ [${title}] 쿠폰을 사용했습니다! 즐거운 시간 보내세요!`);
+      loadDashboard();
+    }
+  } catch (e) { alert("쿠폰 사용 실패"); }
 }
 
 // ===== 현황 대시보드 로드 =====
 async function loadStatsView() {
   $("statKeys").textContent = playerKeys;
   $("statStreak").textContent = playerStreak;
-
   renderWeeklyCalendar();
 
   const histListEl = $("quizHistoryList");
@@ -661,38 +847,7 @@ function renderWeeklyCalendar() {
   }
 }
 
-// ===== 퀴즈 시작 (열쇠 1개 소모) =====
-async function handleStartQuiz(selectedMode) {
-  if (!isMember(currentUser)) {
-    startQuizGame(selectedMode);
-    return;
-  }
-
-  if (playerKeys < 1) {
-    alert("🔑 열쇠가 부족해요!\n오늘 정한 퀘스트를 먼저 완료하고 열쇠를 얻어 보세요.");
-    return;
-  }
-
-  try {
-    const res = await fetch("/api/habits", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "use_key", player: currentUser.name })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      alert(data.error || "열쇠 소모 실패");
-      return;
-    }
-    playerKeys = data.remainingKeys;
-    $("keyCount").textContent = playerKeys;
-    startQuizGame(selectedMode);
-  } catch (err) {
-    alert("서버 통신 오류");
-  }
-}
-
-/* ===== 퀴즈 게임 엔진 ===== */
+/* ===== 퀴즈 게임 엔진 (열쇠 소모 없음, 70점 이상 완주 시 🔑 +1 지급) ===== */
 let mode, qs = [], idx = 0, score = 0, combo = 0, locked = false, log = [];
 const NAMES = {
   hanja1: "B단계 복습",
@@ -738,6 +893,7 @@ async function startQuizGame(m) {
 
   idx = 0; score = 0; combo = 0; log = [];
   $("viewHome").classList.add("hide");
+  $("viewShop").classList.add("hide");
   $("viewStats").classList.add("hide");
   $("end").classList.add("hide");
   $("game").classList.remove("hide");
@@ -804,7 +960,7 @@ function pickQuizOption(btn, t) {
   $("next").focus();
 }
 
-function finishQuiz() {
+async function finishQuiz() {
   $("game").classList.add("hide");
   $("end").classList.remove("hide");
   const max = qs.length * 10;
@@ -813,7 +969,8 @@ function finishQuiz() {
 
   $("stars").textContent = "⭐".repeat(n) + "☆".repeat(3 - n);
   $("endt").textContent = score + "점!";
-  $("endp").textContent = n === 3 ? "대단해요! 완벽에 가까워요." : n === 2 ? "잘했어요! 한 번 더 하면 별 3개!" : "좋은 시작이에요. 다시 도전해 볼까요?";
+  
+  let endMsg = n === 3 ? "대단해요! 완벽에 가까워요." : n === 2 ? "잘했어요! 한 번 더 하면 별 3개!" : "좋은 시작이에요. 다시 도전해 볼까요?";
 
   const userKey = `quizBest_${currentUser.name}`;
   const b = store(userKey) || {};
@@ -822,24 +979,34 @@ function finishQuiz() {
     store(userKey, b);
   }
 
-  fetch("/api/attempts", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      player: currentUser.name,
-      mode,
-      score,
-      total: qs.length,
-      answers: log
-    })
-  }).catch(() => {});
+  // 퀴즈 결과 DB 저장 및 70점 이상 시 열쇠 보너스 처리
+  try {
+    const res = await fetch("/api/attempts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        player: currentUser.name,
+        mode,
+        score,
+        total: qs.length,
+        answers: log
+      })
+    });
+    const result = await res.json();
+    if (result.keyEarned) {
+      endMsg += " 🔑 열쇠 +1개 획득!";
+      if (typeof confetti === 'function') confetti({ particleCount: 70, spread: 70 });
+    }
+  } catch (e) {}
+
+  $("endp").textContent = endMsg;
 }
 
 $("next").onclick = () => {
   idx++;
   idx >= qs.length ? finishQuiz() : renderQuiz();
 };
-$("again").onclick = () => handleStartQuiz(mode);
+$("again").onclick = () => startQuizGame(mode);
 const goHome = () => {
   $("game").classList.add("hide");
   $("end").classList.add("hide");
@@ -849,7 +1016,6 @@ const goHome = () => {
 $("home2").onclick = goHome;
 $("quit").onclick = goHome;
 
-// 초기화 실행
 updateUserBar();
 loadDashboard();
 </script>
