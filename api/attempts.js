@@ -1,6 +1,6 @@
 import { sql, ensureSchema } from "./_db.js";
 
-const MODES = ["hanja1", "hanja2", "hanja3", "hist"];
+const MODES = ["hanja1", "hanja2", "hanja3", "hist", "math_mul", "math_div"];
 const cut = (s, n) => String(s ?? "").slice(0, n);
 
 export default async function handler(req, res) {
