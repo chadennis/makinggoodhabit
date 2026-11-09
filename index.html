@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
+<title>도전! 한자 · 세계사 퀴즈</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff6e0;--card:#fffdf6;--ink:#2a2118;--sub:#6b5b48;--line:#2a2118;--hanja:#c8321e;--hist:#1f5fa8;--ok:#2e8b4f;--no:#c8321e;--gold:#f2b100}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1a14;--card:#2b241b;--ink:#f6ead2;--sub:#c4b494;--line:#f6ead2;--hanja:#ff7a63;--hist:#6fb0ff;--ok:#5fd08a;--no:#ff7a63;--gold:#f2b100}}
+:root[data-theme="dark"]{--bg:#1f1a14;--card:#2b241b;--ink:#f6ead2;--sub:#c4b494;--line:#f6ead2;--hanja:#ff7a63;--hist:#6fb0ff;--ok:#5fd08a;--no:#ff7a63;--gold:#f2b100}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Jua","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px;line-height:1.5}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:2rem;margin:8px 0 4px;line-height:1.2}
+p.sub{color:var(--sub);margin:0 0 20px}
+.menu{display:grid;gap:14px}
+.big{display:block;width:100%;text-align:left;font:inherit;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:18px;padding:16px 18px;cursor:pointer;box-shadow:4px 4px 0 var(--line)}
+.big:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--line)}
+.big b{display:block;font-size:1.35rem}
+.big span{color:var(--sub);font-size:.95rem}
+.big .k{font-size:2.4rem;float:right;line-height:1;margin-left:10px}
+.hanja .k{color:var(--hanja)}.hist .k{color:var(--hist)}
+button:focus-visible{outline:4px solid var(--gold);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:12px}
+.pill{background:var(--card);border:2px solid var(--line);border-radius:99px;padding:2px 12px;font-size:.95rem}
+.bar{height:12px;border:2px solid var(--line);border-radius:99px;background:var(--card);overflow:hidden;margin-bottom:18px}
+.bar i{display:block;height:100%;background:var(--gold);width:0;transition:width .3s}
+.q{background:var(--card);border:3px solid var(--line);border-radius:18px;padding:18px;text-align:center;margin-bottom:14px}
+.q .glyph{font-size:min(5.5rem,13vw);line-height:1.1;font-family:"Noto Serif KR","Batang",serif}
+.q .txt{font-size:1.25rem}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{font:inherit;font-size:1.15rem;color:var(--ink);background:var(--card);border:3px solid var(--line);border-radius:14px;padding:12px 8px;cursor:pointer;min-height:56px}
+.opt.glyph{font-size:2.4rem;font-family:"Noto Serif KR","Batang",serif}
+.opt.ok{background:var(--ok);color:#fff}.opt.no{background:var(--no);color:#fff}
+.opt:disabled{cursor:default}
+.hist-opts{grid-template-columns:1fr}
+.fb{margin-top:14px;padding:12px 14px;border-radius:14px;border:3px solid var(--line);background:var(--card);display:none}
+.fb.show{display:block}
+.next{margin-top:12px;font:inherit;font-size:1.2rem;background:var(--gold);color:#2a2118;border:3px solid var(--line);border-radius:14px;padding:10px 22px;cursor:pointer;box-shadow:3px 3px 0 var(--line)}
+.result{text-align:center}
+.stars{font-size:3rem;letter-spacing:4px}
+.back{font:inherit;background:none;border:none;color:var(--sub);cursor:pointer;text-decoration:underline;padding:4px}
+.hide{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+
+<section id="home">
+  <h1>도전! 퀴즈 왕 🏆</h1>
+  <p class="sub">10문제씩 풀고 별을 모아 봐요.</p>
+  <div class="menu">
+    <button class="big hanja" data-mode="hanja1"><span class="k">字</span><b>구몬 B단계 복습</b><span>배운 한자 90자의 훈과 음 맞히기</span></button>
+    <button class="big hanja" data-mode="hanja2"><span class="k">漢</span><b>한자 모양 도전</b><span>비슷한 글자 구별하기, 글자 합쳐 만들기</span></button>
+    <button class="big hanja" data-mode="hanja3"><span class="k">級</span><b>한자 5급 도전 (150자)</b><span>대한검정회 5급 한자의 훈과 음 맞히기</span></button>
+    <button class="big hist" data-mode="hist"><span class="k">🌍</span><b>세계사 퀴즈</b><span>굵직한 사건과 인물을 맞혀 봐요</span></button>
+  </div>
+  <p class="sub" id="best" style="margin-top:20px"></p>
+</section>
+
+<section id="game" class="hide">
+  <div class="top">
+    <button class="back" id="quit">← 처음으로</button>
+    <span class="pill" id="score">0점</span>
+    <span class="pill" id="combo"></span>
+  </div>
+  <div class="bar"><i id="prog"></i></div>
+  <div class="q" id="qbox"></div>
+  <div class="opts" id="opts"></div>
+  <div class="fb" id="fb"></div>
+  <div style="text-align:center"><button class="next hide" id="next">다음 문제</button></div>
+</section>
+
+<section id="end" class="hide result">
+  <div class="stars" id="stars"></div>
+  <h1 id="endt"></h1>
+  <p class="sub" id="endp"></p>
+  <button class="next" id="again">다시 도전</button>
+  <button class="next" id="home2" style="background:var(--card);color:var(--ink)">처음으로</button>
+</section>
+
+</main>
+<script>
+/* ===== 문제 데이터: 여기만 고치면 문제를 바꿀 수 있어요 ===== */
+// [한자, 훈과 음]
+const H1=[["一","한 일"],["二","두 이"],["三","석 삼"],["四","넉 사"],["五","다섯 오"],["六","여섯 륙"],["七","일곱 칠"],["八","여덟 팔"],["九","아홉 구"],["十","열 십"],
+["日","날 일"],["月","달 월"],["火","불 화"],["水","물 수"],["木","나무 목"],["金","쇠 금"],["土","흙 토"],["山","메 산"],["川","내 천"],["人","사람 인"],
+["口","입 구"],["目","눈 목"],["手","손 수"],["足","발 족"],["大","큰 대"],["小","작을 소"],["中","가운데 중"],["上","윗 상"],["下","아래 하"],["父","아비 부"],
+["母","어미 모"],["女","계집 녀"],["男","사내 남"],["子","아들 자"],["門","문 문"],["王","임금 왕"],["白","흰 백"],["東","동녘 동"],["西","서녘 서"],["南","남녘 남"],["北","북녘 북"],["外","바깥 외"],["力","힘 력"]];
+const H2=[["年","해 년"],["靑","푸를 청"],["學","배울 학"],["校","학교 교"],["先","먼저 선"],["生","날 생"],["國","나라 국"],["韓","나라 한"],["萬","일만 만"],["軍","군사 군"],
+["兄","형 형"],["弟","아우 제"],["室","집 실"],["長","긴 장"],["村","마을 촌"],["林","수풀 림"],["空","빌 공"],["江","강 강"],["花","꽃 화"],["天","하늘 천"],
+["地","땅 지"],["心","마음 심"],["活","살 활"],["海","바다 해"],["草","풀 초"],["世","인간 세"],["正","바를 정"],["直","곧을 직"],["百","일백 백"],["千","일천 천"],["午","낮 오"],["事","일 사"],["名","이름 명"],["全","온전 전"]];
+// 구몬 B단계 90자 (교재 그대로)
+const B=[["目","눈 목"],["耳","귀 이"],["心","마음 심"],["口","입 구"],["足","발 족"],["立","설 립"],["犬","개 견"],["牛","소 우"],["羊","양 양"],
+["馬","말 마"],["鳥","새 조"],["魚","물고기 어"],["父","아버지 부"],["母","어머니 모"],["兒","아이 아"],["衣","옷 의"],["子","아들 자"],["王","임금 왕"],
+["力","힘 력"],["雨","비 우"],["夕","저녁 석"],["光","빛 광"],["果","과실 과"],["金","쇠 금"],["石","돌 석"],["男","남자 남"],["女","여자 녀"],
+["刀","칼 도"],["兄","형 형"],["弟","아우 제"],["左","왼 좌"],["右","오른 우"],["門","문 문"],["車","수레 차"],["品","물건 품"],["米","쌀 미"],
+["天","하늘 천"],["東","동녘 동"],["西","서녘 서"],["太","클 태"],["主","주인 주"],["北","북녘 북"],["南","남녘 남"],["方","모 방"],["己","몸 기"],
+["風","바람 풍"],["白","흰 백"],["自","스스로 자"],["弓","활 궁"],["先","먼저 선"],["本","근본 본"],["末","끝 말"],["多","많을 다"],["少","적을 소"],
+["身","몸 신"],["半","반 반"],["兩","둘 량"],["明","밝을 명"],["村","마을 촌"],["地","땅 지"],["時","때 시"],["姓","성씨 성"],["料","헤아릴 료"],
+["星","별 성"],["名","이름 명"],["安","편안할 안"],["字","글자 자"],["家","집 가"],["習","익힐 습"],["理","다스릴 리"],["期","기약할 기"],["注","물댈 주"],
+["等","등급 등"],["話","이야기 화"],["親","친할 친"],["校","학교 교"],["記","기록할 기"],["間","사이 간"],["聞","들을 문"],["童","아이 동"],["新","새로울 신"],
+["雪","눈 설"],["江","강 강"],["初","처음 초"],["孝","효도 효"],["問","물을 문"],["活","살 활"],["室","방 실"],["科","과목 과"],["敎","가르칠 교"]];
+const BM=Object.fromEntries(B);
+// 대한검정회 5급 150자
+const G5=[["歌","노래 가"],["家","집 가"],["各","각각 각"],["間","사이 간"],["強","강할 강"],["開","열 개"],["去","갈 거"],["見","볼 견"],["京","서울 경"],["計","셀 계"],
+["高","높을 고"],["功","공 공"],["空","빌 공"],["共","함께 공"],["科","과목 과"],["光","빛 광"],["敎","가르칠 교"],["交","사귈 교"],["校","학교 교"],["區","나눌 구"],
+["國","나라 국"],["軍","군사 군"],["近","가까울 근"],["急","급할 급"],["旗","기 기"],["記","기록할 기"],["氣","기운 기"],["農","농사 농"],["多","많을 다"],["短","짧을 단"],
+["答","대답 답"],["當","마땅할 당"],["對","대답할 대"],["代","대신할 대"],["道","길 도"],["刀","칼 도"],["讀","읽을 독"],["冬","겨울 동"],["洞","고을 동"],["頭","머리 두"],
+["等","무리 등"],["登","오를 등"],["樂","즐거울 락"],["來","올 래"],["老","늙을 로"],["理","다스릴 리"],["里","마을 리"],["利","이로울 리"],["萬","일만 만"],["每","매양 매"],
+["面","낯 면"],["命","목숨 명"],["明","밝을 명"],["毛","털 모"],["無","없을 무"],["聞","들을 문"],["問","물을 문"],["物","물건 물"],["米","쌀 미"],["民","백성 민"],
+["班","나눌 반"],["半","절반 반"],["放","놓을 방"],["番","차례 번"],["別","다를 별"],["步","걸음 보"],["部","거느릴 부"],["分","나눌 분"],["社","모일 사"],["事","일 사"],
+["死","죽을 사"],["色","빛 색"],["書","글 서"],["線","줄 선"],["性","성품 성"],["成","이룰 성"],["所","바 소"],["首","머리 수"],["詩","글 시"],["時","때 시"],
+["示","보일 시"],["市","저자 시"],["植","심을 식"],["神","귀신 신"],["身","몸 신"],["信","믿을 신"],["新","새로울 신"],["室","집 실"],["安","편안할 안"],["夜","밤 야"],
+["弱","약할 약"],["語","말씀 어"],["言","말씀 언"],["永","길 영"],["英","꽃부리 영"],["午","낮 오"],["用","쓸 용"],["友","벗 우"],["遠","멀 원"],["原","언덕 원"],
+["元","으뜸 원"],["有","있을 유"],["肉","고기 육"],["育","기를 육"],["銀","은 은"],["音","소리 음"],["邑","고을 읍"],["意","뜻 의"],["作","지을 작"],["長","긴 장"],
+["場","마당 장"],["才","재주 재"],["田","밭 전"],["電","번개 전"],["前","앞 전"],["全","온전 전"],["朝","아침 조"],["祖","할아비 조"],["晝","낮 주"],["住","살 주"],
+["竹","대 죽"],["重","무거울 중"],["直","곧을 직"],["草","풀 초"],["村","마을 촌"],["秋","가을 추"],["春","봄 춘"],["親","친할 친"],["太","클 태"],["通","통할 통"],
+["貝","조개 패"],["便","편할 편"],["平","평평할 평"],["夏","여름 하"],["學","배울 학"],["韓","나라이름 한"],["漢","한수 한"],["合","합할 합"],["海","바다 해"],["行","다닐 행"],
+["血","피 혈"],["形","모양 형"],["花","꽃 화"],["話","말씀 화"],["和","화할 화"],["活","살 활"],["黃","누를 황"],["會","모일 회"],["孝","효도 효"],["後","뒤 후"]];
+// 비슷하게 생긴 한자 묶음
+const SIM=["門問聞間","雨兩雪","左右","東西","南北","自白目","夕多","兄弟兒","注主","父母","力刀","弓己","本末","牛羊","男女"];
+// 합쳐서 만들기: [재료, 정답, 헷갈리는 글자]
+const COMBO=[["門 + 耳","聞","問間門"],["門 + 口","問","聞間門"],["口 + 口 + 口","品","目足口"],["夕 + 夕","多","少夕名"],["日 + 月","明","名時星"],["田 + 力","男","女力果"],["宀 + 子","字","安孝家"],["宀 + 女","安","字姓家"],["木 + 寸","村","本末科"],["日 + 生","星","姓明時"],["女 + 生","姓","星安字"],["老 + 子","孝","教字習"]];
+// [질문, 정답, [오답3개], 해설]
+const W=[
+["이집트의 피라미드는 무엇을 위해 만들었을까요?","왕(파라오)의 무덤",["신전 학교","적을 막는 성","시장"],"파라오가 죽은 뒤에도 영원히 살 수 있도록 거대한 무덤을 만들었어요."],
+["메소포타미아의 함무라비 왕이 만든 유명한 것은?","함무라비 법전",["피라미드","만리장성","올림픽"],"“눈에는 눈, 이에는 이”로 알려진 오래된 법이에요."],
+["고대 그리스에서 4년마다 열린 경기 대회는?","올림픽",["월드컵","아시안게임","검투사 경기"],"제우스 신에게 바치는 제전으로 시작되었어요."],
+["넓은 지역을 정복한 마케도니아의 왕은?","알렉산드로스 대왕",["카이사르","나폴레옹","칭기즈 칸"],"그리스에서 인도 근처까지 큰 제국을 이뤘어요."],
+["중국을 처음 통일하고 만리장성을 이어 쌓게 한 왕은?","진시황",["한 무제","당 태종","공자"],"기원전 221년에 중국을 하나로 통일했어요."],
+["고대 로마의 도시 이름에서 이름이 붙은 나라 로마는 어느 반도에 있었을까요?","이탈리아반도",["이베리아반도","한반도","발칸반도"],"로마는 지중해를 둘러싼 큰 제국으로 성장했어요."],
+["서로마 제국이 무너진 해로 알려진 것은?","476년",["1066년","1492년","1789년"],"이 무렵부터 유럽의 중세 시대가 시작되었다고 봐요."],
+["‘종이’를 개량해 널리 퍼뜨린 나라는?","중국",["이집트","그리스","인도"],"후한 시대 채륜이 종이 만드는 법을 개량했다고 전해져요."],
+["13세기에 몽골 제국을 세운 인물은?","칭기즈 칸",["쿠빌라이","티무르","아틸라"],"역사상 가장 넓은 땅이 이어진 제국 중 하나였어요."],
+["14세기 유럽에서 많은 사람이 목숨을 잃은 전염병은?","흑사병(페스트)",["천연두","독감","콜레라"],"유럽 인구의 상당수가 줄어들 만큼 큰 피해였어요."],
+["십자군 전쟁에서 유럽 군대가 되찾으려 한 도시는?","예루살렘",["로마","베이징","카이로"],"기독교, 이슬람교, 유대교 모두에게 중요한 도시예요."],
+["백년전쟁에서 프랑스를 구한 소녀 영웅은?","잔 다르크",["마리 앙투아네트","엘리자베스 1세","클레오파트라"],"오를레앙을 지켜 내며 프랑스의 승리에 큰 힘이 되었어요."],
+["독일의 구텐베르크가 유럽에서 발전시킨 것은?","금속활자 인쇄술",["증기기관","나침반","망원경"],"책을 더 빠르고 싸게 만들 수 있게 되었어요."],
+["예술과 학문이 꽃핀 ‘르네상스’가 시작된 나라는?","이탈리아",["영국","러시아","일본"],"레오나르도 다 빈치와 미켈란젤로가 활약했어요."],
+["1492년에 대서양을 건너 아메리카 대륙에 도착한 사람은?","콜럼버스",["마젤란","바스쿠 다 가마","쿡 선장"],"인도를 찾아 떠났지만 새로운 대륙에 닿았어요."],
+["마젤란 선단은 무엇을 처음 해냈을까요?","세계 일주",["남극 도착","달 탐험","에베레스트 등반"],"마젤란은 도중에 죽었지만 그의 선원들이 일주를 마쳤어요."],
+["1776년 미국이 발표한 것은?","독립 선언",["노예 해방 선언","헌법 폐지","세계 대전 선언"],"영국으로부터 독립하겠다고 알렸어요."],
+["1789년 프랑스 혁명 때 시민들이 습격한 곳은?","바스티유 감옥",["에펠탑","루브르 박물관","베르사유 정원"],"자유, 평등, 박애의 정신이 퍼지는 계기가 되었어요."],
+["산업 혁명이 처음 시작된 나라는?","영국",["미국","중국","스페인"],"증기기관 덕분에 공장과 기차가 크게 늘었어요."],
+["나폴레옹이 마지막으로 크게 패한 전투는?","워털루 전투",["트라팔가르 해전","노르망디 상륙","한산도 대첩"],"이후 세인트헬레나 섬으로 쫓겨났어요."],
+["제1차 세계 대전이 시작된 해는?","1914년",["1812년","1939년","1950년"],"사라예보에서 일어난 사건이 불씨가 되었어요."],
+["제2차 세계 대전이 끝난 해는?","1945년",["1918년","1929년","1962년"],"우리나라가 광복을 맞은 해이기도 해요."],
+["동서 독일을 나누던 베를린 장벽이 무너진 해는?","1989년",["1945년","1961년","2001년"],"이듬해인 1990년에 독일이 통일되었어요."],
+["1991년에 무너져 여러 나라로 나뉜 나라는?","소련(소비에트 연방)",["오스만 제국","대영 제국","로마 제국"],"러시아를 비롯한 15개 나라로 나뉘었어요."]
+];
+/* ===== 게임 로직 ===== */
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let mode,qs,idx,score,combo,best=0,locked;
+const NAMES={hanja1:"B단계 복습",hanja2:"모양 도전",hanja3:"5급 도전",hist:"세계사"};
+
+function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
+function showBest(){const b=store("quizBest")||{};const t=Object.keys(b).map(k=>NAMES[k]+" "+b[k]+"점").join(" / ");$("best").textContent=t?"내 최고 기록: "+t:""}
+
+function makeHanja(pool,all){
+  return shuffle(pool).slice(0,10).map(([g,m])=>{
+    const forward=Math.random()<0.6;
+    const others=shuffle(all.filter(x=>x[0]!==g)).slice(0,3);
+    if(forward) return{type:"g",glyph:g,text:"이 한자의 훈과 음은?",ans:m,opts:shuffle([m,...others.map(o=>o[1])]),exp:g+" = "+m};
+    return{type:"c",text:"“"+m+"” 에 알맞은 한자는?",ans:g,opts:shuffle([g,...others.map(o=>o[0])]),glyphOpts:true,exp:g+" = "+m};
+  });
+}
+function makeShape(){
+  const sim=shuffle(SIM).slice(0,5).map(s=>{
+    const g=shuffle([...s])[0];
+    let pool=[...s];
+    shuffle(B.map(x=>x[0])).forEach(c=>{if(pool.length<4&&!pool.includes(c))pool.push(c)});
+    return{type:"g",glyph:g,text:"비슷한 글자와 헷갈리지 마세요! 훈과 음은?",ans:BM[g],opts:shuffle(pool.map(c=>BM[c])),exp:[...s].map(c=>c+" "+BM[c]).join(" / ")};
+  });
+  const mk=shuffle(COMBO).slice(0,5).map(([p,a,d])=>({type:"c",glyph:p,text:"합치면 어떤 한자가 될까요?",ans:a,opts:shuffle([a,...d]),glyphOpts:true,exp:p+" = "+a+" ("+BM[a]+")"}));
+  return shuffle([...sim,...mk]);
+}
+function makeHist(){
+  return shuffle(W).slice(0,10).map(([q,a,w,e])=>({type:"h",text:q,ans:a,opts:shuffle([a,...w]),exp:e}));
+}
+function start(m){
+  mode=m;
+  qs=m==="hist"?makeHist():m==="hanja1"?makeHanja(B,B):m==="hanja3"?makeHanja(G5,G5):makeShape();
+  idx=0;score=0;combo=0;
+  $("home").classList.add("hide");$("end").classList.add("hide");$("game").classList.remove("hide");
+  render();
+}
+function render(){
+  const q=qs[idx];locked=false;
+  $("prog").style.width=(idx/qs.length*100)+"%";
+  $("score").textContent=score+"점";
+  $("combo").textContent=combo>=2?"🔥 "+combo+"연속":"";
+  $("qbox").innerHTML=(q.glyph?'<div class="glyph">'+q.glyph+'</div>':"")+'<div class="txt">'+(idx+1)+"/"+qs.length+" · "+q.text+"</div>";
+  const o=$("opts");o.className="opts"+(q.type==="h"?" hist-opts":"");o.innerHTML="";
+  q.opts.forEach(t=>{const b=document.createElement("button");b.className="opt"+(q.glyphOpts?" glyph":"");b.textContent=t;b.onclick=()=>pick(b,t);o.appendChild(b)});
+  $("fb").className="fb";$("next").classList.add("hide");
+}
+function pick(btn,t){
+  if(locked)return;locked=true;
+  const q=qs[idx],right=t===q.ans;
+  [...$("opts").children].forEach(b=>{b.disabled=true;if(b.textContent===q.ans)b.classList.add("ok")});
+  if(right){combo++;score+=10+(combo>=3?5:0)}else{combo=0;btn.classList.add("no")}
+  $("score").textContent=score+"점";
+  $("combo").textContent=combo>=2?"🔥 "+combo+"연속":"";
+  $("fb").innerHTML=(right?"🎉 정답!":"😮 아쉬워요!")+" "+q.exp;
+  $("fb").className="fb show";
+  $("next").textContent=idx===qs.length-1?"결과 보기":"다음 문제";
+  $("next").classList.remove("hide");$("next").focus();
+}
+function finish(){
+  $("game").classList.add("hide");$("end").classList.remove("hide");
+  const max=qs.length*10;const r=score/max;
+  const n=r>=.9?3:r>=.6?2:r>=.3?1:0;
+  $("stars").textContent="⭐".repeat(n)+"☆".repeat(3-n);
+  $("endt").textContent=score+"점!";
+  $("endp").textContent=n===3?"대단해요! 완벽에 가까워요.":n===2?"잘했어요! 한 번 더 하면 별 3개!":"좋은 시작이에요. 다시 도전해 볼까요?";
+  const b=store("quizBest")||{};if(!b[mode]||score>b[mode]){b[mode]=score;store("quizBest",b)}
+}
+$("next").onclick=()=>{idx++;idx>=qs.length?finish():render()};
+$("again").onclick=()=>start(mode);
+const home=()=>{$("game").classList.add("hide");$("end").classList.add("hide");$("home").classList.remove("hide");showBest()};
+$("home2").onclick=home;$("quit").onclick=home;
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>start(b.dataset.mode));
+showBest();
+</script>
+</body>
+</html>
