@@ -156,7 +156,7 @@ const W=[
 /* ===== 게임 로직 ===== */
 const $=id=>document.getElementById(id);
 const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
-let mode,qs,idx,score,combo,best=0,locked;
+let mode,qs,idx,score,combo,best=0,locked,log=[];
 const NAMES={hanja1:"B단계 복습",hanja2:"모양 도전",hanja3:"5급 도전",hist:"세계사"};
 
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v))}catch(e){return null}}
@@ -186,7 +186,7 @@ function makeHist(){
 function start(m){
   mode=m;
   qs=m==="hist"?makeHist():m==="hanja1"?makeHanja(B,B):m==="hanja3"?makeHanja(G5,G5):makeShape();
-  idx=0;score=0;combo=0;
+  idx=0;score=0;combo=0;log=[];
   $("home").classList.add("hide");$("end").classList.add("hide");$("game").classList.remove("hide");
   render();
 }
@@ -203,6 +203,7 @@ function render(){
 function pick(btn,t){
   if(locked)return;locked=true;
   const q=qs[idx],right=t===q.ans;
+  log.push({q:(q.glyph?q.glyph+" ":"")+q.text,chosen:t,answer:q.ans,correct:right});
   [...$("opts").children].forEach(b=>{b.disabled=true;if(b.textContent===q.ans)b.classList.add("ok")});
   if(right){combo++;score+=10+(combo>=3?5:0)}else{combo=0;btn.classList.add("no")}
   $("score").textContent=score+"점";
@@ -220,6 +221,8 @@ function finish(){
   $("endt").textContent=score+"점!";
   $("endp").textContent=n===3?"대단해요! 완벽에 가까워요.":n===2?"잘했어요! 한 번 더 하면 별 3개!":"좋은 시작이에요. 다시 도전해 볼까요?";
   const b=store("quizBest")||{};if(!b[mode]||score>b[mode]){b[mode]=score;store("quizBest",b)}
+  // 풀이 기록을 서버(DB)에 저장. 서버가 없는 환경(GitHub Pages 등)에서는 조용히 건너뜀
+  fetch("/api/attempts",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({player:store("quizPlayer")||"아들",mode,score,total:qs.length,answers:log})}).catch(()=>{});
 }
 $("next").onclick=()=>{idx++;idx>=qs.length?finish():render()};
 $("again").onclick=()=>start(mode);
