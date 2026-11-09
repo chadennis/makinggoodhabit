@@ -1,6 +1,6 @@
 import { sql } from "./_db.js";
 
-const VALID_MODES = ["hanja1", "hanja2", "hanja3", "hist"];
+const VALID_MODES = ["hanja1", "hanja2", "hanja3", "hist", "math_mul", "math_div"];
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
@@ -16,7 +16,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Invalid mode" });
     }
 
-    // DB에서 무작위로 n문제 가져오기
     const rows = await sql`
       SELECT id, mode, q_type, prompt, glyph, answer, options, explanation
       FROM quiz_questions
