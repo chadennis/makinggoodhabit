@@ -2,6 +2,7 @@ import { sql, ensureSchema } from "./_db.js";
 
 const MODES = ["hanja1", "hanja2", "hanja3", "hist", "math_mul", "math_div"];
 const cut = (s, n) => String(s ?? "").slice(0, n);
+const DAILY_KEY_LIMIT = 5;
 
 export default async function handler(req, res) {
   try {
@@ -24,7 +25,26 @@ export default async function handler(req, res) {
         SELECT ${row.id}, x.question, x.chosen, x.answer, x.correct
         FROM jsonb_to_recordset(${JSON.stringify(answers)}::jsonb)
         AS x(question text, chosen text, answer text, correct boolean)`;
-      return res.status(201).json({ id: row.id });
+
+      // 퀴즈 70점 이상 달성 시 열쇠 1개 지급 (일일 5개 한도 체크)
+      let keyEarned = false;
+      const passScore = (total * 10) * 0.7; // 10문제 기준 70점
+      if (score >= passScore) {
+        const today = new Date().toISOString().split("T")[0];
+        let [st] = await sql`SELECT keys, daily_keys_earned, last_key_date::text FROM player_status WHERE player = ${player}`;
+        if (!st) {
+          await sql`INSERT INTO player_status (player, keys, streak, daily_keys_earned, last_key_date) VALUES (${player}, 1, 0, 1, ${today})`;
+          keyEarned = true;
+        } else {
+          const earned = st.last_key_date === today ? (st.daily_keys_earned || 0) : 0;
+          if (earned < DAILY_KEY_LIMIT) {
+            await sql`UPDATE player_status SET keys = keys + 1, daily_keys_earned = ${earned + 1}, last_key_date = ${today} WHERE player = ${player}`;
+            keyEarned = true;
+          }
+        }
+      }
+
+      return res.status(201).json({ id: row.id, keyEarned });
     }
 
     if (req.method === "GET") {
