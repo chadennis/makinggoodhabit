@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Serif+KR:wght@600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<title>수인이의 좋은 습관 만들기 & 도전 퀴즈 🏆</title>
+<title>좋은 습관 만들기 & 도전 퀴즈 🏆</title>
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
---bg:#fff6e0;--card:#fffdf6;--ink:#2a2118;--sub:#6b5b48;--line:#2a2118;--hanja:#c8321e;--hist:#1f5fa8;--ok:#2e8b4f;--no:#c8321e;--gold:#f2b100;--key:#ff9f43}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1a14;--card:#2b241b;--ink:#f6ead2;--sub:#c4b494;--line:#f6ead2;--hanja:#ff7a63;--hist:#6fb0ff;--ok:#5fd08a;--no:#ff7a63;--gold:#f2b100;--key:#ffa834}}
+--bg:#fff6e0;--card:#fffdf6;--ink:#2a2118;--sub:#6b5b48;--line:#2a2118;--hanja:#c8321e;--hist:#1f5fa8;--math:#6c5ce7;--ok:#2e8b4f;--no:#c8321e;--gold:#f2b100;--key:#ff9f43}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1a14;--card:#2b241b;--ink:#f6ead2;--sub:#c4b494;--line:#f6ead2;--hanja:#ff7a63;--hist:#6fb0ff;--math:#a29bfe;--ok:#5fd08a;--no:#ff7a63;--gold:#f2b100;--key:#ffa834}}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Jua","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:18px;line-height:1.5}
@@ -65,7 +65,7 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
 .big span{color:var(--sub);font-size:.95rem}
 .big .k{font-size:2.2rem;float:right;line-height:1;margin-left:8px}
 .big .cost-tag{display:inline-block;background:var(--bg);border:1.5px solid var(--line);border-radius:8px;padding:2px 8px;font-size:.85rem;color:var(--key);margin-top:6px;font-weight:bold}
-.hanja .k{color:var(--hanja)}.hist .k{color:var(--hist)}
+.hanja .k{color:var(--hanja)}.hist .k{color:var(--hist)}.math .k{color:var(--math)}
 
 /* 현황(통계) 페이지 스타일 */
 .stat-summary-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:20px}
@@ -163,13 +163,36 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
   </div>
 
   <form class="add-quest-box" id="addQuestForm" onsubmit="handleCreateQuest(event)">
-    <input type="text" id="newQuestTitle" class="quest-input" placeholder="오늘 해낼 일을 적어보세요 (예: 구몬 한자 5장, 책 30분)" maxlength="40" required>
+    <input type="text" id="newQuestTitle" class="quest-input" placeholder="오늘 해낼 일을 적어보세요 (예: 수학 2장, 독서, 한자)" maxlength="40" required>
     <button type="submit" class="add-btn">+ 퀘스트 추가</button>
   </form>
 
+  <!-- 2. 도전 퀴즈 아레나 -->
+  <!-- 은수 추천 수학 섹션 -->
   <div class="sec-title" style="margin-top:28px">
-    <h2>⚔️ 도전 퀴즈 아레나</h2>
-    <span class="sec-sub">1판당 🔑 1개 소모</span>
+    <h2>🧮 반짝반짝 수학 퀴즈 <span style="font-size:.9rem;color:var(--math);font-weight:normal">(은수 추천 ⭐)</span></h2>
+    <span class="sec-sub">1판당 🔑 1개</span>
+  </div>
+
+  <div class="menu" style="margin-bottom:24px">
+    <button class="big math" onclick="handleStartQuiz('math_mul')">
+      <span class="k">✖️</span>
+      <b>두 자리 수 곱셈 왕</b>
+      <span>두 자리 수와 두 자리 수의 곱셈 챌린지!</span>
+      <div class="cost-tag">🔑 열쇠 1개</div>
+    </button>
+    <button class="big math" onclick="handleStartQuiz('math_div')">
+      <span class="k">➗</span>
+      <b>두 자리 나눗셈 마스터</b>
+      <span>두 자리 수를 한 자리 수로 쏙쏙 나누기!</span>
+      <div class="cost-tag">🔑 열쇠 1개</div>
+    </button>
+  </div>
+
+  <!-- 수인 추천 한자 & 세계사 섹션 -->
+  <div class="sec-title">
+    <h2>⚔️ 한자 & 세계사 퀴즈 <span style="font-size:.9rem;color:var(--hanja);font-weight:normal">(수인 추천 🏆)</span></h2>
+    <span class="sec-sub">1판당 🔑 1개</span>
   </div>
 
   <div class="menu">
@@ -201,9 +224,8 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
   <p class="sub" id="best" style="margin-top:20px;text-align:center"></p>
 </section>
 
-<!-- 2. 성장 현황 탭 (신규 추가 메뉴) -->
+<!-- 2. 성장 현황 탭 -->
 <section id="viewStats" class="hide">
-  <!-- 요약 지표 카드 -->
   <div class="stat-summary-grid">
     <div class="summary-box">
       <div class="summary-lbl">보유 열쇠</div>
@@ -219,14 +241,12 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
     </div>
   </div>
 
-  <!-- 최근 7일간 실천 현황 -->
   <div class="weekly-calendar">
     <div style="font-weight:bold;font-size:1.1rem;margin-bottom:4px">📅 최근 7일 퀘스트 실천 현황</div>
     <div style="font-size:.85rem;color:var(--sub)">하루 1개 이상 퀘스트를 완료하면 도장이 쾅 찍혀요!</div>
     <div class="week-grid" id="weeklyGrid"></div>
   </div>
 
-  <!-- 최근 퀴즈 기록 -->
   <div class="sec-title">
     <h2>🏆 최근 퀴즈 도전 기록</h2>
     <span class="sec-sub">최근 10판</span>
@@ -235,7 +255,6 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
     <div style="text-align:center;padding:16px;color:var(--sub)">기록을 불러오는 중...</div>
   </div>
 
-  <!-- 자주 틀린 오답 랭킹 -->
   <div class="sec-title" style="margin-top:24px">
     <h2>📖 자주 헷갈린 오답 랭킹</h2>
     <span class="sec-sub">복습하고 완벽 정복!</span>
@@ -273,12 +292,13 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
 <!-- 로그인 모달 -->
 <div id="loginModal" class="modal hide">
   <div class="modal-box">
-    <h2>프로필 선택 🦁</h2>
-    <p class="sub" style="margin-bottom:8px">수인이면 비밀번호를, 손님이면 이름을 적어주세요.</p>
+    <h2>프로필 선택 🌟</h2>
+    <p class="sub" style="margin-bottom:8px">수인/은수는 비밀번호를, 손님은 이름을 적어주세요.</p>
     <label style="font-size:.95rem"><b>역할 선택:</b></label>
     <select id="roleSelect" class="modal-input" onchange="togglePinInput()">
       <option value="guest">체험 손님 (게스트)</option>
       <option value="suin">🦁 수인 (비밀번호 필요)</option>
+      <option value="eunsu">🐰 은수 (비밀번호 필요)</option>
     </select>
     
     <div id="guestField">
@@ -287,7 +307,7 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
     </div>
 
     <div id="pinField" class="hide">
-      <label style="font-size:.95rem"><b>수인이 4자리 비밀번호:</b></label>
+      <label style="font-size:.95rem"><b id="pinLabel">비밀번호:</b></label>
       <input type="password" id="pinInput" class="modal-input" placeholder="4자리 숫자" maxlength="4" inputmode="numeric">
     </div>
 
@@ -317,29 +337,40 @@ const shuffle = a => {
   return a;
 };
 
-const SUIN_PIN = "2017";
+// 비밀번호 설정 (수인: 2017, 은수: 2021)
+const PINS = {
+  suin: "2017",
+  eunsu: "2021"
+};
+
 let currentUser = store("activeUser") || { role: "guest", name: "게스트" };
 let currentHabits = [];
 let weeklyStatsData = [];
 let playerKeys = 0;
 let playerStreak = 0;
 
-// 날짜 표시
 const now = new Date();
 const days = ["일", "월", "화", "수", "목", "금", "토"];
 $("currentDateStr").textContent = `${now.getMonth() + 1}월 ${now.getDate()}일 (${days[now.getDay()]}요일)`;
 
-function updateUserBar() {
-  const isSuin = currentUser.role === "suin";
-  $("userDisplay").textContent = isSuin ? "🦁 수인" : `👤 ${currentUser.name}`;
-  $("loginBtn").textContent = isSuin ? "로그아웃" : "사용자 변경";
+function isMember(u) {
+  return u && (u.role === "suin" || u.role === "eunsu");
 }
 
-// 탭 전환 (오늘의 도전 vs 성장 현황)
+function updateUserBar() {
+  if (currentUser.role === "suin") {
+    $("userDisplay").textContent = "🦁 수인";
+  } else if (currentUser.role === "eunsu") {
+    $("userDisplay").textContent = "🐰 은수";
+  } else {
+    $("userDisplay").textContent = `👤 ${currentUser.name}`;
+  }
+  $("loginBtn").textContent = isMember(currentUser) ? "로그아웃" : "사용자 변경";
+}
+
 function switchMainTab(tab) {
   $("tabBtnHome").classList.toggle("active", tab === 'home');
   $("tabBtnStats").classList.toggle("active", tab === 'stats');
-
   $("viewHome").classList.toggle("hide", tab !== 'home');
   $("viewStats").classList.toggle("hide", tab !== 'stats');
 
@@ -349,7 +380,7 @@ function switchMainTab(tab) {
 }
 
 $("loginBtn").onclick = () => {
-  if (currentUser.role === "suin") {
+  if (isMember(currentUser)) {
     currentUser = { role: "guest", name: "게스트" };
     store("activeUser", currentUser);
     updateUserBar();
@@ -362,9 +393,11 @@ $("loginBtn").onclick = () => {
 
 function togglePinInput() {
   const role = $("roleSelect").value;
-  if (role === "suin") {
+  if (role === "suin" || role === "eunsu") {
     $("guestField").classList.add("hide");
     $("pinField").classList.remove("hide");
+    $("pinLabel").textContent = (role === "suin") ? "수인이 4자리 비밀번호:" : "은수 4자리 비밀번호:";
+    $("pinInput").value = "";
     $("pinInput").focus();
   } else {
     $("guestField").classList.remove("hide");
@@ -375,10 +408,12 @@ function togglePinInput() {
 
 function applyLogin() {
   const role = $("roleSelect").value;
-  if (role === "suin") {
+  if (role === "suin" || role === "eunsu") {
     const pin = $("pinInput").value;
-    if (pin === SUIN_PIN) {
-      currentUser = { role: "suin", name: "수인" };
+    const targetPin = PINS[role];
+    if (pin === targetPin) {
+      const name = (role === "suin") ? "수인" : "은수";
+      currentUser = { role, name };
       store("activeUser", currentUser);
       closeModal('loginModal');
       $("pinInput").value = "";
@@ -403,10 +438,10 @@ function closeModal(id) { $(id).classList.add("hide"); }
 
 // ===== 퀘스트 / 습관 API 연동 =====
 async function loadDashboard() {
-  const isSuin = currentUser.role === "suin";
+  const member = isMember(currentUser);
   showBest();
 
-  if (!isSuin) {
+  if (!member) {
     const local = store(`localHabits_${currentUser.name}`) || [
       { id: 1, title: "오늘 책 20분 읽기", completed: false },
       { id: 2, title: "방 깨끗이 정돈하기", completed: false }
@@ -467,7 +502,7 @@ async function handleCreateQuest(e) {
   const title = input.value.trim();
   if (!title) return;
 
-  if (currentUser.role !== "suin") {
+  if (!isMember(currentUser)) {
     currentHabits.push({ id: Date.now(), title, completed: false });
     store(`localHabits_${currentUser.name}`, currentHabits);
     input.value = "";
@@ -491,7 +526,7 @@ async function handleCreateQuest(e) {
 }
 
 async function toggleHabit(id) {
-  if (currentUser.role !== "suin") {
+  if (!isMember(currentUser)) {
     const h = currentHabits.find(x => x.id === id);
     if (h) {
       h.completed = !h.completed;
@@ -524,7 +559,7 @@ async function toggleHabit(id) {
 async function deleteHabit(id) {
   if (!confirm("이 퀘스트를 삭제할까요?")) return;
 
-  if (currentUser.role !== "suin") {
+  if (!isMember(currentUser)) {
     currentHabits = currentHabits.filter(x => x.id !== id);
     store(`localHabits_${currentUser.name}`, currentHabits);
     renderHabits();
@@ -539,7 +574,7 @@ async function deleteHabit(id) {
   }
 }
 
-// ===== 현황 대시보드 로드 (통계, 7일 캘린더, 오답 분석) =====
+// ===== 현황 대시보드 로드 =====
 async function loadStatsView() {
   $("statKeys").textContent = playerKeys;
   $("statStreak").textContent = playerStreak;
@@ -559,7 +594,6 @@ async function loadStatsView() {
 
     $("statTotalQuiz").textContent = recent.length;
 
-    // 1. 최근 퀴즈 10회
     if (recent.length === 0) {
       histListEl.innerHTML = `<div style="text-align:center;padding:14px;color:var(--sub)">아직 도전한 퀴즈 기록이 없어요.</div>`;
     } else {
@@ -580,7 +614,6 @@ async function loadStatsView() {
       });
     }
 
-    // 2. 자주 헷갈린 오답 랭킹
     if (wrong.length === 0) {
       wrongListEl.innerHTML = `<div style="text-align:center;padding:14px;color:var(--ok)">🎉 틀린 문제가 없어요! 완벽합니다.</div>`;
     } else {
@@ -602,7 +635,6 @@ async function loadStatsView() {
   }
 }
 
-// 7일간의 도장 캘린더 렌더링
 function renderWeeklyCalendar() {
   const grid = $("weeklyGrid");
   grid.innerHTML = "";
@@ -631,7 +663,7 @@ function renderWeeklyCalendar() {
 
 // ===== 퀴즈 시작 (열쇠 1개 소모) =====
 async function handleStartQuiz(selectedMode) {
-  if (currentUser.role !== "suin") {
+  if (!isMember(currentUser)) {
     startQuizGame(selectedMode);
     return;
   }
@@ -662,12 +694,19 @@ async function handleStartQuiz(selectedMode) {
 
 /* ===== 퀴즈 게임 엔진 ===== */
 let mode, qs = [], idx = 0, score = 0, combo = 0, locked = false, log = [];
-const NAMES = { hanja1: "B단계 복습", hanja2: "모양 도전", hanja3: "5급 도전", hist: "세계사" };
+const NAMES = {
+  hanja1: "B단계 복습",
+  hanja2: "모양 도전",
+  hanja3: "5급 도전",
+  hist: "세계사",
+  math_mul: "두 자리 곱셈",
+  math_div: "두 자리 나눗셈"
+};
 
 function showBest() {
   const userKey = `quizBest_${currentUser.name}`;
   const b = store(userKey) || {};
-  const t = Object.keys(b).map(k => NAMES[k] + " " + b[k] + "점").join(" / ");
+  const t = Object.keys(b).map(k => (NAMES[k] || k) + " " + b[k] + "점").join(" / ");
   $("best").textContent = t ? `[${currentUser.name}] 최고 기록: ` + t : "";
 }
 
