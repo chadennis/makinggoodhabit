@@ -223,9 +223,7 @@ main{max-width:640px;margin:0 auto;padding:16px 16px 40px}
   <div class="weekly-calendar">
     <div style="font-weight:bold;font-size:1.1rem;margin-bottom:4px">📅 최근 7일 퀘스트 실천 현황</div>
     <div style="font-size:.85rem;color:var(--sub)">하루 1개 이상 퀘스트를 완료하면 도장이 쾅 찍혀요!</div>
-    <div class="week-grid" id="weeklyGrid">
-      <!-- 7일 도장 동적 생성 -->
-    </div>
+    <div class="week-grid" id="weeklyGrid"></div>
   </div>
 
   <!-- 최근 퀴즈 기록 -->
@@ -548,7 +546,6 @@ async function loadStatsView() {
 
   renderWeeklyCalendar();
 
-  // 퀴즈 도전 이력 및 오답 랭킹 가져오기
   const histListEl = $("quizHistoryList");
   const wrongListEl = $("wrongRankingList");
   histListEl.innerHTML = `<div style="text-align:center;padding:12px;color:var(--sub)">기록을 불러오는 중...</div>`;
@@ -611,14 +608,12 @@ function renderWeeklyCalendar() {
   grid.innerHTML = "";
   const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
 
-  // 최근 6일 전부터 오늘까지 (총 7일)
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
     const dateStr = d.toISOString().split("T")[0];
     const isToday = (i === 0);
 
-    // 해당 날짜에 완료한 퀘스트가 있는지 weeklyStatsData에서 탐색
     const stat = weeklyStatsData.find(s => s.completed_date === dateStr);
     const count = stat ? stat.count : (isToday ? currentHabits.filter(h => h.completed).length : 0);
     const isDone = count > 0;
@@ -642,8 +637,7 @@ async function handleStartQuiz(selectedMode) {
   }
 
   if (playerKeys < 1) {
-    alert("🔑 열쇠가 부족해요!
-오늘 정한 퀘스트를 먼저 완료하고 열쇠를 얻어 보세요.");
+    alert("🔑 열쇠가 부족해요!\n오늘 정한 퀘스트를 먼저 완료하고 열쇠를 얻어 보세요.");
     return;
   }
 
